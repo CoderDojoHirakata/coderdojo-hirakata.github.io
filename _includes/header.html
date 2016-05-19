@@ -13,22 +13,22 @@
             </h1>
           </a>
         </div>
-        <span class="nav-toggle">
+        <span class="nav-toggle" id="nav-toggle">
           <span></span>
           <span></span>
           <span></span>
         </span>
-        <div class="nav-right nav-menu">
+        <div class="nav-right nav-menu" id="nav-menu">
           <a class="nav-item" href="/">
             ホーム
           </a>
           <a class="nav-item{% if page.url contains '/about/' %} is-active{% endif %}" href="/about/">
             CoderDojoについて
           </a>
-          <a class="nav-item{% if page.url contains '/about/' %} is-active{% endif %}" href="#">
+          <a class="nav-item{% if page.url contains '/join/' %} is-active{% endif %}" href="#">
             参加する
           </a>
-          <a class="nav-item{% if page.url contains '/about/' %} is-active{% endif %}" href="#">
+          <a class="nav-item{% if page.url contains '/donate/' %} is-active{% endif %}" href="#">
             寄付する
           </a>
           <a class="nav-item{% if page.url contains '/blog/' %} is-active{% endif %}" href="#">
