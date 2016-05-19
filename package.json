@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/CoderDojoHirakata/coderdojo-hirakata.github.io#readme",
   "devDependencies": {
-    "gulp": "^3.9.1"
+    "gulp": "^3.9.1",
+    "jquery": "^2.2.3"
   }
 }

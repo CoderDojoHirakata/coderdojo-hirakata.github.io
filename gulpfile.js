@@ -7,4 +7,6 @@ gulp.task('default', function() {
   .pipe(gulp.dest("_sass"));
   gulp.src("node_modules/bulma/sass/**")
   .pipe(gulp.dest("_sass/sass"));
+  gulp.src("node_modules/jquery/dist/jquery.min.js")
+  .pipe(gulp.dest("js"));
 });
