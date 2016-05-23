@@ -15,6 +15,7 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://coderdojo-hirakata.github.io" # the base hostname & protocol for your site
 twitter_username: CoderHirakata
 github_username:  coderdojo-hirakata
+zen_url: "https://zen.coderdojo.com/dojo/jp/ri4-ben3-da4-ban3-fu3-mei2-fang1-shi4/hirakata-osaka"
 
 # Build settings
 markdown: kramdown
