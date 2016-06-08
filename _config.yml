@@ -7,7 +7,7 @@
 
 # Site settings
 title: CoderDojo 枚方
-# email: hirakata@coderdojo.com
+email: hirakata.osaka.jp@coderdojo.com
 timezone: Asia/Tokyo
 description: > # this means to ignore newlines until "baseurl:"
   CoderDojo枚方は7〜17歳の子どもを対象にしたプログラミング道場です。
