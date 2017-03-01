@@ -4,7 +4,7 @@ require 'recipe/drupal8.php';
 
 // Configuration
 
-set('repository', 'git@domain.com:username/repository.git');
+set('repository', 'https://github.com/coderdojo-hirakata/coderdojo-hirakata.github.io.git');
 set('ssh_type', 'native');
 add('shared_files', []);
 add('shared_dirs', []);
@@ -12,12 +12,12 @@ add('writable_dirs', []);
 
 // Servers
 
-server('production', 'unplat.info')
-    ->user('deploy')
-    ->identityFile()
-//    ->user('sumida')
-//    ->identityFileAndPassword()
-    ->set('deploy_path', '/var/www/coderdojo-hirakata');
+server('production', 'coderdojo-hirakata.org')
+  ->user('sumida')
+  ->identityFile()
+  ->set('deploy_path', '/var/git/coderdojo-hirakata')
+  ->set('branch', 'develop');
+
 
 
 // Tasks
