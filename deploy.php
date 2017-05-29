@@ -16,7 +16,7 @@ server('production', 'coderdojo-hirakata.org')
   ->user('sumida')
   ->identityFile()
   ->set('deploy_path', '/var/git/coderdojo-hirakata')
-  ->set('branch', 'develop');
+  ->set('branch', 'master');
 
 
 
