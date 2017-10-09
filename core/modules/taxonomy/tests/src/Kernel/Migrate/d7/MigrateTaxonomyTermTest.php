@@ -18,6 +18,7 @@ class MigrateTaxonomyTermTest extends MigrateDrupal7TestBase {
     'datetime',
     'image',
     'link',
+    'menu_ui',
     'node',
     'taxonomy',
     'telephone',
@@ -76,7 +77,7 @@ class MigrateTaxonomyTermTest extends MigrateDrupal7TestBase {
     $entity = Term::load($id);
     $this->assertTrue($entity instanceof TermInterface);
     $this->assertIdentical($expected_label, $entity->label());
-    $this->assertIdentical($expected_vid, $entity->getVocabularyId());
+    $this->assertIdentical($expected_vid, $entity->bundle());
     $this->assertEqual($expected_description, $entity->getDescription());
     $this->assertEquals($expected_format, $entity->getFormat());
     $this->assertEqual($expected_weight, $entity->getWeight());
