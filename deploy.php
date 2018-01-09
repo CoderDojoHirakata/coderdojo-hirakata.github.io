@@ -12,9 +12,9 @@ add('writable_dirs', []);
 
 // Servers
 
-server('production', 'coderdojo-hirakata.org')
+host('coderdojo-hirakata.org')
+  ->stage('production')
   ->user('sumida')
-  ->identityFile()
   ->set('deploy_path', '/var/git/coderdojo-hirakata')
   ->set('branch', 'master');
 
