@@ -7,6 +7,7 @@
 
 namespace Deployer;
 
+use Deployer\Exception\RuntimeException;
 use Deployer\Host\FileLoader;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
@@ -169,8 +170,8 @@ function task($name, $body = null)
 /**
  * Call that task before specified task runs.
  *
- * @param string $it
- * @param string $that
+ * @param string $it The task before $that should be run.
+ * @param string $that The task to be run.
  */
 function before($it, $that)
 {
@@ -183,8 +184,8 @@ function before($it, $that)
 /**
  * Call that task after specified task runs.
  *
- * @param string $it
- * @param string $that
+ * @param string $it The task after $that should be run.
+ * @param string $that The task to be run.
  */
 function after($it, $that)
 {
@@ -197,13 +198,13 @@ function after($it, $that)
 /**
  * Setup which task run on failure of first.
  *
- * @param string $it
- * @param string $that
+ * @param string $it The task which need to fail so $that should be run.
+ * @param string $that The task to be run.
  */
 function fail($it, $that)
 {
     $deployer = Deployer::get();
-    $deployer['fail']->set($it, $that);
+    $deployer->fail->set($it, $that);
 }
 
 /**
@@ -246,7 +247,11 @@ function option($name, $shortcut = null, $mode = null, $description = '', $defau
  */
 function cd($path)
 {
-    set('working_path', parse($path));
+    try {
+        set('working_path', parse($path));
+    } catch (RuntimeException $e) {
+        throw new \Exception('Unable to change directory into "'. $path .'"', 0, $e);
+    }
 }
 
 /**
@@ -258,9 +263,12 @@ function cd($path)
 function within($path, $callback)
 {
     $lastWorkingPath = get('working_path', '');
-    set('working_path', parse($path));
-    $callback();
-    set('working_path', $lastWorkingPath);
+    try {
+        set('working_path', parse($path));
+        $callback();
+    } finally {
+        set('working_path', $lastWorkingPath);
+    }
 }
 
 /**
@@ -272,8 +280,6 @@ function within($path, $callback)
  */
 function run($command, $options = [])
 {
-    $client = Deployer::get()->sshClient;
-    $process = Deployer::get()->processRunner;
     $host = Context::get()->getHost();
     $hostname = $host->getHostname();
 
@@ -291,8 +297,10 @@ function run($command, $options = [])
     }
 
     if ($host instanceof Localhost) {
+        $process = Deployer::get()->processRunner;
         $output = $process->run($hostname, $command, $options);
     } else {
+        $client = Deployer::get()->sshClient;
         $output = $client->run($host, $command, $options);
     }
 
@@ -370,8 +378,11 @@ function on($hosts, callable $callback)
     foreach ($hosts as $host) {
         if ($host instanceof Host) {
             Context::push(new Context($host, $input, $output));
-            $callback($host);
-            Context::pop();
+            try {
+                $callback($host);
+            } finally {
+                Context::pop();
+            }
         } else {
             throw new \InvalidArgumentException("Function on can iterate only on Host instances.");
         }
