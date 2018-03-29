@@ -11,6 +11,7 @@ use Deployer\Collection\Collection;
 use Deployer\Console\Application;
 use Deployer\Console\AutocompleteCommand;
 use Deployer\Console\CommandEvent;
+use Deployer\Console\DebugCommand;
 use Deployer\Console\InitCommand;
 use Deployer\Console\Output\Informer;
 use Deployer\Console\Output\OutputWatcher;
@@ -51,6 +52,8 @@ use function Deployer\Support\array_merge_alternate;
  * @property ParallelExecutor parallelExecutor
  * @property Informer informer
  * @property Logger logger
+ * @property ProcessOutputPrinter pop
+ * @property Collection fail
  */
 class Deployer extends Container
 {
@@ -222,6 +225,7 @@ class Deployer extends Container
         $this->getConsole()->add($this['init_command']);
         $this->getConsole()->add(new SshCommand($this));
         $this->getConsole()->add(new RunCommand($this));
+        $this->getConsole()->add(new DebugCommand($this));
         $this->getConsole()->add(new AutocompleteCommand());
         $this->getConsole()->afterRun([$this, 'collectAnonymousStats']);
     }
@@ -304,10 +308,13 @@ class Deployer extends Container
         $deployer = new self($console);
 
         // Pretty-print uncaught exceptions in symfony-console
-        set_exception_handler(function ($e) use ($input, $output) {
+        set_exception_handler(function ($e) use ($input, $output, $deployer) {
             $io = new SymfonyStyle($input, $output);
             $io->block($e->getMessage(), get_class($e), 'fg=white;bg=red', ' ', true);
             $io->block($e->getTraceAsString());
+
+            $deployer->logger->log('['. get_class($e) .'] '. $e->getMessage());
+            $deployer->logger->log($e->getTraceAsString());
             exit(1);
         });
 
