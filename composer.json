@@ -62,8 +62,5 @@
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         }
-    ],
-    "require-dev": {
-        "deployer/deployer": "^6.1"
-    }
+    ]
 }
